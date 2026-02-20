@@ -1,1 +1,109 @@
-in
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Color Clicker</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background: #222;
+            color: #fff;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 50px;
+            font-size: 3em;
+            color: #ff6347;
+        }
+        p {
+            margin: 10px auto;
+            max-width: 600px;
+        }
+        button {
+            font-size: 1.2em;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.25s ease;
+        }
+        #color-button {
+            background-color: #61dafb;
+            color: #222;
+        }
+        #color-button:hover:enabled {
+            background-color: #21a1f1;
+        }
+        #score {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+        #timer {
+            font-size: 1.5em;
+            margin-top: 8px;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Color Click Challenge</h1>
+    <p>Click the button as many times as you can in 15 seconds!</p>
+
+    <div id="game">
+        <button id="color-button" disabled>Click Me!</button>
+        <div id="score">Score: 0</div>
+        <div id="timer">Time: 15</div>
+        <div id="controls">
+            <button id="start-button">Start Game</button>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            let score = 0;
+            let time = 15;
+            let timerInterval = null;
+
+            const clickBtn = document.getElementById("color-button");
+            const scoreDisplay = document.getElementById("score");
+            const timerDisplay = document.getElementById("timer");
+            const startBtn = document.getElementById("start-button");
+
+            clickBtn.addEventListener("click", () => {
+                score++;
+                scoreDisplay.textContent = "Score: " + score;
+                clickBtn.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+            });
+
+            startBtn.addEventListener("click", () => {
+                // Reset state
+                score = 0;
+                time = 15;
+                scoreDisplay.textContent = "Score: 0";
+                timerDisplay.textContent = "Time: 15";
+
+                clickBtn.disabled = false;
+                startBtn.disabled = true;
+
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    time--;
+                    timerDisplay.textContent = "Time: " + time;
+                    if (time <= 0) {
+                        clearInterval(timerInterval);
+                        clickBtn.disabled = true;
+                        startBtn.disabled = false;
+                        alert("Time's up! Your score: " + score);
+                    }
+                }, 1000);
+            });
+        })();
+    </script>
+</body>
+</html>
